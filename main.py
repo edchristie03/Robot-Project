@@ -1,23 +1,17 @@
+import random
 identifier = 1000
 grid_size = 10
 
 name = input('What is the name of the robot? ')
-row_coordinate = int(input('What is its current row coordinate? '))
-column_coordinate = int(input('What is its current column coordinate? '))
-direction = input('What direction is the robot facing? (n,s,e,w) ')
-
 message = f"Hello. My name is {name}. My ID is {identifier}"
 print(message)
 
-if row_coordinate > (grid_size - 1):
-    row_coordinate = (grid_size - 1)
-elif row_coordinate < 0:
-    row_coordinate = 0
+row_coordinate = random.randint(0, 9)
+column_coordinate = random.randint(0,9)
 
-if column_coordinate > (grid_size - 1):
-    column_coordinate = (grid_size - 1)
-elif column_coordinate < 0:
-    column_coordinate = 0
+directions = ['n','s','e','w']
+direction_list = random.sample(directions,1)
+direction = direction_list[0]
 
 if row_coordinate <= 4 and column_coordinate <= 4:
     location = 'top left'
