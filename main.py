@@ -6,18 +6,18 @@ name = input('What is the name of the robot? ')
 message = f"Hello. My name is {name}. My ID is {identifier}"
 print(message)
 
-row_coordinate = random.randint(0, 9)
-column_coordinate = random.randint(0,9)
+row_coordinate = random.randint(0, (grid_size - 1))
+column_coordinate = random.randint(0,(grid_size - 1))
 
 directions = ['n','s','e','w']
 direction_list = random.sample(directions,1)
 direction = direction_list[0]
 
-if row_coordinate <= 4 and column_coordinate <= 4:
+if row_coordinate <= (grid_size/2 - 1) and column_coordinate <= (grid_size/2 - 1):
     location = 'top left'
-elif row_coordinate <=4 and column_coordinate >=5:
+elif row_coordinate <= (grid_size/2 - 1) and column_coordinate > (grid_size/2 - 1):
     location = 'top right'
-elif row_coordinate >=5 and column_coordinate <= 4:
+elif row_coordinate > (grid_size/2 - 1) and column_coordinate <= (grid_size/2 - 1):
     location = 'bottom left'
 else:
     location = 'bottom right'
@@ -44,11 +44,11 @@ elif direction == 'e' and column_coordinate != (grid_size - 1):
 elif direction == 'w' and column_coordinate != 0:
     column_coordinate -= 1
 
-if row_coordinate <= 4 and column_coordinate <= 4:
+if row_coordinate <= (grid_size/2 - 1) and column_coordinate <= (grid_size/2 - 1):
     location = 'top left'
-elif row_coordinate <=4 and column_coordinate >=5:
+elif row_coordinate <= (grid_size/2 - 1) and column_coordinate > (grid_size/2 - 1):
     location = 'top right'
-elif row_coordinate >=5 and column_coordinate <= 4:
+elif row_coordinate > (grid_size/2 - 1) and column_coordinate <= (grid_size/2 - 1):
     location = 'bottom left'
 else:
     location = 'bottom right'
