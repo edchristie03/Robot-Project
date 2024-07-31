@@ -55,47 +55,50 @@ else:
 
 # Moving to edge of grid, one step at a time
 
+while row_coordinate != (grid_size - 1) or column_coordinate != (grid_size - 1):
 
-if direction == 'North':
-    while row_coordinate != 0:
-        print('Moving one step forward') 
-        row_coordinate -= 1
-        print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
-    if row_coordinate == 0:
-        print('I have a wall in front of me')
-        print('Turning 90 degrees clockwise')
-        direction = 'East'
-        print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
-elif direction == 'South':
-    while row_coordinate != (grid_size - 1):
-        print('Moving one step forward') 
-        row_coordinate += 1
-        print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
-    if row_coordinate == (grid_size - 1):
-        print('I have a wall in front of me')
-        print('Turning 90 degrees clockwise')
-        direction = 'West'
-        print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
-elif direction == 'East':
-    while column_coordinate != (grid_size - 1):
-        print('Moving one step forward') 
-        column_coordinate += 1
-        print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
-    if column_coordinate == (grid_size - 1):
-        print('I have a wall in front of me')
-        print('Turning 90 degrees clockwise')
-        direction = 'South'
-        print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
-elif direction == 'West':
-    while column_coordinate != 0:
-        print('Moving one step forward') 
-        column_coordinate -= 1
-        print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
-    if column_coordinate == 0:
-        print('I have a wall in front of me')
-        print('Turning 90 degrees clockwise')
-        direction = 'North'
-        print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
+    if direction == 'North':
+        while row_coordinate != 0:
+            print('Moving one step forward') 
+            row_coordinate -= 1
+            print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
+        if row_coordinate == 0:
+            print('I have a wall in front of me')
+            print('Turning 90 degrees clockwise')
+            direction = 'East'
+            print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
+    elif direction == 'South':
+        while row_coordinate != (grid_size - 1):
+            print('Moving one step forward') 
+            row_coordinate += 1
+            print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
+        if row_coordinate == (grid_size - 1):
+            print('I have a wall in front of me')
+            print('Turning 90 degrees clockwise')
+            direction = 'West'
+            print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
+    elif direction == 'East':
+        while column_coordinate != (grid_size - 1):
+            print('Moving one step forward') 
+            column_coordinate += 1
+            print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
+        if column_coordinate == (grid_size - 1):
+            print('I have a wall in front of me')
+            print('Turning 90 degrees clockwise')
+            direction = 'South'
+            print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
+    elif direction == 'West':
+        while column_coordinate != 0:
+            print('Moving one step forward') 
+            column_coordinate -= 1
+            print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
+        if column_coordinate == 0:
+            print('I have a wall in front of me')
+            print('Turning 90 degrees clockwise')
+            direction = 'North'
+            print(f"My current location is ({row_coordinate}, {column_coordinate}). I am facing {direction}.")
+
+print('I am drinking leché, I am happy!')
 
 
 
