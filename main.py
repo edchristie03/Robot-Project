@@ -54,6 +54,8 @@ else:
 '''
 
 # Moving to edge of grid, one step at a time
+# Turning clockwise when at edge
+# Moving around grid until finding milk at cell (grid_size - 1), (grid_size - 1)
 
 while row_coordinate != (grid_size - 1) or column_coordinate != (grid_size - 1):
 
