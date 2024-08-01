@@ -196,5 +196,5 @@ def run_simulation(grid_size=10, target_row=9, target_col=9):
     pass
 
         
-grid_size = 10         
-run_simulation(grid_size=grid_size, target_row=(grid_size - 1))
+#grid_size = 10         
+run_simulation()
