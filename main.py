@@ -9,7 +9,7 @@ import random
 2. Print robot greeting
     a. Print name and identifier
     b. Print location and direction
-3. Navigate to Ribena
+3. Navigate to drink
     a. While not at (grid_size - 1, grid_size - 1).
         a. Move in direction to edge
             a. Move one step.
@@ -20,12 +20,14 @@ import random
 
 # Set up robot
 
-def set_up_robot(grid_size):
+def set_up_robot(grid_size, target_row, target_col):
     name = input('What is the name of the robot? ')
+    drink = input('What is their favourite drink? ')
+    print(f"There is a glass of {drink} at position ({target_row}, {target_col}).")
     identifier = 1000
     row, column = get_random_start(grid_size)
-    direction = get_random_direction()
-    return name, identifier, row, column, direction
+    direction, directions = get_random_direction()
+    return name, identifier, row, column, direction, directions, drink
 
 def get_random_start(grid_size):
     """ Random allocation of starting position.
@@ -53,7 +55,128 @@ def get_random_direction():
     directions = ['North','East','South','West']
     direction_list = random.sample(directions,1)
     direction = direction_list[0]
+    return direction, directions
+
+# Print robot greeting
+
+def print_greeting(name, identifier, row, column, direction):
+    """ Print robot greeting.
+
+    Args:
+        name (int): Name
+        identifier (int): ID
+        row (int): Row coordinate
+        column (int): Column coordinate
+        direction (str): Direction string
+
+    """
+    print_name_id(name, identifier)
+    print_location_direction(row, column, direction)
+    input('Ready? ')
+    pass
+
+def print_name_id(name, identifier):
+    """ Print message with name and ID.
+
+    Args:
+        name (int): Name
+        identifier (int): ID
+    
+    """
+    print(f"Hello. My name is {name}. My ID is {identifier}.")
+    pass
+
+def print_location_direction(row, column, direction):
+    """ Print message with location and direction.
+
+    Args:
+        row (int): Row coordinate
+        column (int): Column coordinate
+        direction (str): Direction string
+    """
+    print(f"My current location is ({row}, {column}). I am facing {direction}.")
+    pass
+
+# Navigate to drink
+
+def navigate(row, column, direction, directions, grid_size, target_row, target_col, drink):
+    """ Navigate to the target.
+
+    Args:
+        row (int): Row coordinate
+        column (int): Column coordinate
+        direction (str): Direction string
+        directions (list): List of possible directions
+        grid_size (int): Size of NxN grid
+        
+    Return:
+    """
+    while row != target_row or column != target_col:
+        row, column = move_to_edge(row, column, direction)
+
+        if row == target_row and column == target_col:
+            break
+
+        direction = rotate(directions, direction)   
+
+    print(f"I am drinking {drink}, I am happy!")    
+ 
+    pass
+
+def move_to_edge(row, column, direction):
+    """ Move in starting direction to the edge of the grid.
+
+    Args:
+        row (int): Row coordinate
+        column (int): Column coordinate
+        direction (str): Direction string
+        
+    Return:
+    """
+    if direction == 'North':
+        while row != 0:
+            print('Moving one step forward') 
+            row -= 1
+            print_location_direction(row, column, direction)
+    elif direction == 'South':
+        while row != (grid_size - 1):
+            print('Moving one step forward') 
+            row += 1
+            print_location_direction(row, column, direction)
+        
+    elif direction == 'East':
+        while column != (grid_size - 1):
+            print('Moving one step forward') 
+            column += 1
+            print_location_direction(row, column, direction)
+        
+    elif direction == 'West':
+        while column != 0:
+            print('Moving one step forward') 
+            column -= 1
+            print_location_direction(row, column, direction)
+
+    return row, column
+
+def rotate(directions, direction):
+    """ Rotate 90 degrees clockwise.
+
+    Args:
+        directions (list): List of possible directions
+        direction (str): Direction string
+        
+    Return:
+    """
+    print('I have a wall in front of me')
+    print('Turning 90 degrees clockwise')
+    index = directions.index(direction)
+    index = (index + 1) % 4
+    direction = directions[index]
+    
     return direction
+    
+
+# Root function
 
 def run_simulation(grid_size=10, target_row=9, target_col=9):
     """ Start robot navigation simulation.
@@ -66,8 +189,9 @@ def run_simulation(grid_size=10, target_row=9, target_col=9):
     Return:
     
     """
-    name, identifier, row, column, direction = set_up_robot(grid_size)
-    print(name, identifier, row, column, direction)
+    name, identifier, row, column, direction, directions, drink = set_up_robot(grid_size, target_row, target_col)
+    print_greeting(name, identifier, row, column, direction)
+    navigate(row, column, direction, directions, grid_size, target_row, target_col, drink)
     
     pass
 
