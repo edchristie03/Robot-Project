@@ -1,4 +1,6 @@
 
+"hello"
+
 import random
 '''
 1. Set up robot
@@ -154,6 +156,7 @@ def move_to_edge(row, column, direction):
         row (int): Row coordinate
         column (int): Column coordinate
         direction (str): Direction string
+        grid_size (int): GLOBAL variable for the grid size
         
     Return:
         row (int): Row coordinate
@@ -162,28 +165,51 @@ def move_to_edge(row, column, direction):
     """
     if direction == 'North':
         while row != 0:
-            print('Moving one step forward') 
-            row -= 1
-            print_location_direction(row, column, direction)
+            row, column = step(row, column, direction)
     elif direction == 'South':
         while row != (grid_size - 1):
-            print('Moving one step forward') 
-            row += 1
-            print_location_direction(row, column, direction)
-        
+            row, column = step(row, column, direction)      
     elif direction == 'East':
         while column != (grid_size - 1):
-            print('Moving one step forward') 
-            column += 1
-            print_location_direction(row, column, direction)
-        
+            row, column = step(row, column, direction)
     elif direction == 'West':
         while column != 0:
-            print('Moving one step forward') 
-            column -= 1
-            print_location_direction(row, column, direction)
+            row, column = step(row, column, direction)
 
     return row, column
+
+def step(row, column, direction):
+    """ Move in starting direction to the edge of the grid.
+
+    Args:
+        row (int): Row coordinate
+        column (int): Column coordinate
+        direction (str): Direction string
+        
+    Return:
+        row (int): Row coordinate
+        column (int): Column coordinate
+        
+    """
+    if direction == 'North':
+        print('Moving one step forward') 
+        row -= 1
+        print_location_direction(row, column, direction)
+    elif direction == 'South':        
+        print('Moving one step forward') 
+        row += 1
+        print_location_direction(row, column, direction)
+    elif direction == 'East':        
+        print('Moving one step forward') 
+        column += 1
+        print_location_direction(row, column, direction)    
+    elif direction == 'West':
+        print('Moving one step forward') 
+        column -= 1
+        print_location_direction(row, column, direction)
+    
+    return row, column
+    
 
 def rotate(directions, direction):
     """ Rotate 90 degrees clockwise.
@@ -225,5 +251,6 @@ def run_simulation(grid_size=10, target_row=9, target_col=9):
     pass
 
         
-grid_size = 10         
+
+grid_size = 10    # Global variable      
 run_simulation()
