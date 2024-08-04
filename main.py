@@ -39,10 +39,9 @@ def set_up_robot(grid_size):
         
     """ 
     
-    identifier = 1000
     row, column = get_random_start(grid_size)
     direction, directions = get_random_direction()
-    return identifier, row, column, direction, directions
+    return row, column, direction, directions
 
 def get_random_start(grid_size):
     """ Random allocation of starting position.
@@ -259,9 +258,10 @@ def run_simulation(grid_size=10):
     
     """
     names = get_names_list('robot_names.txt')
+    identifier = 1000
 
     for name in names:
-        identifier = 1000
+        identifier += 1
         print_name_id(name, identifier)
 
     print()
@@ -270,7 +270,7 @@ def run_simulation(grid_size=10):
         name = names[i]
         target_row, target_col = get_targets(i)
         print(f"{name} is searching for its drink")
-        identifier, row, column, direction, directions = set_up_robot(grid_size)
+        row, column, direction, directions = set_up_robot(grid_size)
         print_location_direction(row, column, direction)
         navigate(row, column, direction, directions, grid_size, target_row, target_col)
         print()
