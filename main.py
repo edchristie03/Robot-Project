@@ -40,12 +40,10 @@ def set_up_robot(grid_size, target_row, target_col):
     """ 
     names = get_names_list('robot_names.txt')
     name = random.choice(names)
-    drink = input('What is their favourite drink? ')
-    print(f"There is a glass of {drink} at position ({target_row}, {target_col}).")
     identifier = 1000
     row, column = get_random_start(grid_size)
     direction, directions = get_random_direction()
-    return name, identifier, row, column, direction, directions, drink
+    return name, identifier, row, column, direction, directions
 
 def get_random_start(grid_size):
     """ Random allocation of starting position.
@@ -101,7 +99,9 @@ def print_greeting(name, identifier, row, column, direction):
     """
     print_name_id(name, identifier)
     print_location_direction(row, column, direction)
-    input('Ready? ')
+    # drink = input('What is their favourite drink? ')
+    # print(f"There is a glass of {drink} at position ({target_row}, {target_col}).")
+    # input('Ready? ')
     pass
 
 def print_name_id(name, identifier):
@@ -150,7 +150,7 @@ def navigate(row, column, direction, directions, grid_size, target_row, target_c
 
         direction = rotate(directions, direction)   
 
-    print(f"I am drinking {drink}, I am happy!")    
+    print(f"I am drinking milk, I am happy!")    
  
     pass
 
@@ -249,8 +249,8 @@ def run_simulation(grid_size=10, target_row=9, target_col=9):
     Return:
     
     """
-    name, identifier, row, column, direction, directions, drink = set_up_robot(grid_size, target_row, target_col)
-    print_greeting(name, identifier, row, column, direction)
+    name, identifier, row, column, direction, directions = set_up_robot(grid_size, target_row, target_col)
+    drink = print_greeting(name, identifier, row, column, direction)
     navigate(row, column, direction, directions, grid_size, target_row, target_col, drink)
     
     pass
