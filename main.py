@@ -39,9 +39,9 @@ def set_up_robot(grid_size):
         
     """ 
     
-    row, column = get_random_start(grid_size)
+    position = get_random_start(grid_size)
     direction, directions = get_random_direction()
-    return row, column, direction, directions
+    return position, direction, directions
 
 def get_random_start(grid_size):
     """ Random allocation of starting position.
@@ -53,9 +53,8 @@ def get_random_start(grid_size):
         row (int): Row coordinate
         column (int): Column coordinate
     """
-    row = random.randint(0, (grid_size - 1))
-    column = random.randint(0,(grid_size - 1))
-    return row, column
+    position = tuple(random.sample(range(grid_size - 1), 2))
+    return position
 
 def get_random_direction():
     """ Random allocation of starting direction.
@@ -85,14 +84,13 @@ def get_names_list(filename):
     return names
 
 def get_targets(i):
-    targets = [[9,9],[9,0],[0,9]]
-    target_row = targets[i][0]
-    target_col = targets[i][1]    
-    return target_row, target_col
+    targets = [(9,9),(9,0),(0,9)]
+    target_position = targets[i]    
+    return target_position
 
 # Print robot greeting
 
-def print_greeting(name, identifier, row, column, direction):
+def print_greeting(name, identifier, position , direction):
     """ Print robot greeting.
 
     Args:
@@ -104,7 +102,7 @@ def print_greeting(name, identifier, row, column, direction):
 
     """
     print_name_id(name, identifier)
-    print_location_direction(row, column, direction)
+    print_location_direction(position, direction)
     # drink = input('What is their favourite drink? ')
     # print(f"There is a glass of {drink} at position ({target_row}, {target_col}).")
     # input('Ready? ')
@@ -121,7 +119,7 @@ def print_name_id(name, identifier):
     print(f"Hello. My name is {name}. My ID is {identifier}.")
     pass
 
-def print_location_direction(row, column, direction):
+def print_location_direction(position, direction):
     """ Print message with location and direction.
 
     Args:
@@ -129,12 +127,12 @@ def print_location_direction(row, column, direction):
         column (int): Column coordinate
         direction (str): Direction string
     """
-    print(f"My current location is ({row}, {column}). I am facing {direction}.")
+    print(f"My current location is ({position[0]}, {position[1]}). I am facing {direction}.")
     pass
 
 # Navigate to drink
 
-def navigate(row, column, direction, directions, grid_size, target_row, target_col):
+def navigate(position, direction, directions, grid_size, target_position):
     """ Navigate to the target. Move to edge. Rotate 90 clcokwise while not at target.
 
     Args:
@@ -148,10 +146,10 @@ def navigate(row, column, direction, directions, grid_size, target_row, target_c
         drink (str): Favourite drink of the robot.
         
     """
-    while row != target_row or column != target_col:
-        row, column = move_to_edge(row, column, direction)
+    while position[0] != target_position[0] or position[1] != target_position[1]:
+        position = move_to_edge(position, direction)
 
-        if row == target_row and column == target_col:
+        if position[0] == target_position[0] and position[1] == target_position[1]:
             break
 
         direction = rotate(directions, direction)   
@@ -160,7 +158,7 @@ def navigate(row, column, direction, directions, grid_size, target_row, target_c
  
     pass
 
-def move_to_edge(row, column, direction):
+def move_to_edge(position, direction):
     """ Move in starting direction to the edge of the grid.
 
     Args:
@@ -175,21 +173,21 @@ def move_to_edge(row, column, direction):
         
     """
     if direction == 'North':
-        while row != 0:
-            row, column = step(row, column, direction)
+        while position[0] != 0:
+            position = step(position, direction)
     elif direction == 'South':
-        while row != (grid_size - 1):
-            row, column = step(row, column, direction)      
+        while position[0] != (grid_size - 1):
+            position = step(position, direction)      
     elif direction == 'East':
-        while column != (grid_size - 1):
-            row, column = step(row, column, direction)
+        while position[1] != (grid_size - 1):
+            position = step(position, direction)
     elif direction == 'West':
-        while column != 0:
-            row, column = step(row, column, direction)
+        while position[1] != 0:
+            position = step(position, direction)
 
-    return row, column
+    return position
 
-def step(row, column, direction):
+def step(position, direction):
     """ Move in starting direction to the edge of the grid.
 
     Args:
@@ -204,22 +202,22 @@ def step(row, column, direction):
     """
     if direction == 'North':
         print('Moving one step forward') 
-        row -= 1
-        print_location_direction(row, column, direction)
+        position = (position[0] - 1, position[1]) 
+        print_location_direction(position, direction)
     elif direction == 'South':        
         print('Moving one step forward') 
-        row += 1
-        print_location_direction(row, column, direction)
+        position = (position[0] + 1, position[1])
+        print_location_direction(position, direction)
     elif direction == 'East':        
         print('Moving one step forward') 
-        column += 1
-        print_location_direction(row, column, direction)    
+        position = (position[0], position[1] + 1)
+        print_location_direction(position, direction)    
     elif direction == 'West':
         print('Moving one step forward') 
-        column -= 1
-        print_location_direction(row, column, direction)
+        position = (position[0], position[1] - 1)
+        print_location_direction(position, direction)
     
-    return row, column
+    return position
     
 
 def rotate(directions, direction):
@@ -268,11 +266,11 @@ def run_simulation(grid_size=10):
 
     for i in range(len(names)):
         name = names[i]
-        target_row, target_col = get_targets(i)
+        target_position = get_targets(i)
         print(f"{name} is searching for its drink")
-        row, column, direction, directions = set_up_robot(grid_size)
-        print_location_direction(row, column, direction)
-        navigate(row, column, direction, directions, grid_size, target_row, target_col)
+        position, direction, directions = set_up_robot(grid_size)
+        print_location_direction(position, direction)
+        navigate(position, direction, directions, grid_size, target_position)
         print()
     
     pass
