@@ -1,6 +1,3 @@
-
-"hello"
-
 import random
 '''
 1. Set up robot
@@ -41,7 +38,8 @@ def set_up_robot(grid_size, target_row, target_col):
         drink (str): Favourite drink of the robot
         
     """ 
-    name = input('What is the name of the robot? ')
+    names = get_names_list('robot_names.txt')
+    name = random.choice(names)
     drink = input('What is their favourite drink? ')
     print(f"There is a glass of {drink} at position ({target_row}, {target_col}).")
     identifier = 1000
@@ -77,9 +75,16 @@ def get_random_direction():
         
     """
     directions = ['North','East','South','West']
-    direction_list = random.sample(directions,1)
-    direction = direction_list[0]
+    direction = random.choice(directions)
     return direction, directions
+
+def get_names_list(filename):
+    names = []
+    textfile = open(filename)
+    for line in textfile:
+        line = line.strip()
+        names.append(line)
+    return names
 
 # Print robot greeting
 
