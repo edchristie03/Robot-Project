@@ -38,12 +38,11 @@ def set_up_robot(grid_size, target_row, target_col):
         drink (str): Favourite drink of the robot
         
     """ 
-    names = get_names_list('robot_names.txt')
-    name = random.choice(names)
+    
     identifier = 1000
     row, column = get_random_start(grid_size)
     direction, directions = get_random_direction()
-    return name, identifier, row, column, direction, directions
+    return identifier, row, column, direction, directions
 
 def get_random_start(grid_size):
     """ Random allocation of starting position.
@@ -77,11 +76,13 @@ def get_random_direction():
     return direction, directions
 
 def get_names_list(filename):
-    names = []
+    all_names = []
     textfile = open(filename)
     for line in textfile:
         line = line.strip()
-        names.append(line)
+        all_names.append(line)
+
+    names = random.sample(all_names,3)
     return names
 
 # Print robot greeting
@@ -128,7 +129,7 @@ def print_location_direction(row, column, direction):
 
 # Navigate to drink
 
-def navigate(row, column, direction, directions, grid_size, target_row, target_col, drink):
+def navigate(row, column, direction, directions, grid_size, target_row, target_col):
     """ Navigate to the target. Move to edge. Rotate 90 clcokwise while not at target.
 
     Args:
@@ -241,6 +242,8 @@ def rotate(directions, direction):
 def run_simulation(grid_size=10, target_row=9, target_col=9):
     """ Start robot navigation simulation.
 
+        Print name and ID for each robot. Then navigate for each robot.
+
     Args:
         grid_size (int): The size of the grid. Defaults to 10.
         target_row (int): The target row coordinate. Defaults to 9.
@@ -249,9 +252,20 @@ def run_simulation(grid_size=10, target_row=9, target_col=9):
     Return:
     
     """
-    name, identifier, row, column, direction, directions = set_up_robot(grid_size, target_row, target_col)
-    drink = print_greeting(name, identifier, row, column, direction)
-    navigate(row, column, direction, directions, grid_size, target_row, target_col, drink)
+    names = get_names_list('robot_names.txt')
+
+    for name in names:
+        identifier = 1000
+        print_name_id(name, identifier)
+
+    print()
+
+    for name in names:
+        print(f"{name} is searching for its drink")
+        identifier, row, column, direction, directions = set_up_robot(grid_size, target_row, target_col)
+        print_location_direction(row, column, direction)
+        navigate(row, column, direction, directions, grid_size, target_row, target_col)
+        print()
     
     pass
 
