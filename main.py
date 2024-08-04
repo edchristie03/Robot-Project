@@ -20,7 +20,7 @@ import random
 
 # Set up robot
 
-def set_up_robot(grid_size, target_row, target_col):
+def set_up_robot(grid_size):
     """ Set up details for the robot starting position and grid
 
     Args:
@@ -84,6 +84,12 @@ def get_names_list(filename):
 
     names = random.sample(all_names,3)
     return names
+
+def get_targets(i):
+    targets = [[9,9],[9,0],[0,9]]
+    target_row = targets[i][0]
+    target_col = targets[i][1]    
+    return target_row, target_col
 
 # Print robot greeting
 
@@ -239,7 +245,7 @@ def rotate(directions, direction):
 
 # Root function
 
-def run_simulation(grid_size=10, target_row=9, target_col=9):
+def run_simulation(grid_size=10):
     """ Start robot navigation simulation.
 
         Print name and ID for each robot. Then navigate for each robot.
@@ -260,9 +266,11 @@ def run_simulation(grid_size=10, target_row=9, target_col=9):
 
     print()
 
-    for name in names:
+    for i in range(len(names)):
+        name = names[i]
+        target_row, target_col = get_targets(i)
         print(f"{name} is searching for its drink")
-        identifier, row, column, direction, directions = set_up_robot(grid_size, target_row, target_col)
+        identifier, row, column, direction, directions = set_up_robot(grid_size)
         print_location_direction(row, column, direction)
         navigate(row, column, direction, directions, grid_size, target_row, target_col)
         print()
