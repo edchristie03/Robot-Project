@@ -218,19 +218,19 @@ def step(robot):
     """
     if robot['direction'] == 'North':
         print('Moving one step forward') 
-        robot['position'][0] -= 1
+        robot['position'] = (robot['position'][0] - 1, robot['position'][1])
         print_location_direction(robot)
     elif robot['direction'] == 'South':        
         print('Moving one step forward') 
-        robot['position'][0] += 1
+        robot['position'] = (robot['position'][0] + 1, robot['position'][1])
         print_location_direction(robot)
     elif robot['direction'] == 'East':        
         print('Moving one step forward') 
-        robot['position'][1] += 1
+        robot['position'] = (robot['position'][0], robot['position'][1] + 1)
         print_location_direction(robot)    
     elif robot['direction'] == 'West':
         print('Moving one step forward') 
-        robot['position'][1] -= 1
+        robot['position'] = (robot['position'][0], robot['position'][1] - 1)
         print_location_direction(robot)
     
     return robot
@@ -284,15 +284,13 @@ def run_simulation(grid_size=10):
         robots.append(robot)
         target_position = get_targets(i)
         print(f"{name} is searching for its drink")
-        
-        
         print_location_direction(robot)
         navigate(robot, directions, grid_size, target_position)
         print()
     
     pass
 
-# robot = {"id": 1001, "name": "Daft Punk", "position": (7, 6), "direction": "s"}
+
         
 
 grid_size = 10    # Global variable      
