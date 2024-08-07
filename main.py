@@ -20,7 +20,7 @@ import random
 
 # Set up robot
 
-def set_up_robot(grid_size):
+def set_up_robot(grid_size, name, identifer):
     """ Set up details for the robot starting position and grid
 
     Args:
@@ -38,10 +38,13 @@ def set_up_robot(grid_size):
         drink (str): Favourite drink of the robot
         
     """ 
-    
+
     position = get_random_start(grid_size)
     direction, directions = get_random_direction()
-    return position, direction, directions
+
+    robot = {"id": identifer, "name": name, "position": position, "direction": direction}
+    
+    return robot, directions
 
 def get_random_start(grid_size):
     """ Random allocation of starting position.
@@ -119,7 +122,7 @@ def print_name_id(name, identifier):
     print(f"Hello. My name is {name}. My ID is {identifier}.")
     pass
 
-def print_location_direction(position, direction):
+def print_location_direction(robot):
     """ Print message with location and direction.
 
     Args:
@@ -127,12 +130,25 @@ def print_location_direction(position, direction):
         column (int): Column coordinate
         direction (str): Direction string
     """
-    print(f"My current location is ({position[0]}, {position[1]}). I am facing {direction}.")
+    print(f"My current location is {robot['position']}. I am facing {robot['direction']}.")
     pass
+
+def print_group_names_ids():
+
+    names = get_names_list('robot_names.txt')
+    identifier = 1000
+    ids = []
+
+    for name in names:
+        identifier += 1
+        ids.append(identifier)
+        print_name_id(name, identifier)
+    return names, ids
+    
 
 # Navigate to drink
 
-def navigate(position, direction, directions, grid_size, target_position):
+def navigate(robot, directions, grid_size, target_position):
     """ Navigate to the target. Move to edge. Rotate 90 clcokwise while not at target.
 
     Args:
@@ -146,19 +162,19 @@ def navigate(position, direction, directions, grid_size, target_position):
         drink (str): Favourite drink of the robot.
         
     """
-    while position[0] != target_position[0] or position[1] != target_position[1]:
-        position = move_to_edge(position, direction)
+    while robot['position'][0] != target_position[0] or robot['position'][1] != target_position[1]:
+        robot = move_to_edge(robot)
 
-        if position[0] == target_position[0] and position[1] == target_position[1]:
+        if robot['position'][0] == target_position[0] and robot['position'][1] == target_position[1]:
             break
 
-        direction = rotate(directions, direction)   
+        robot = rotate(directions, robot)
 
     print(f"I am drinking milk, I am happy!")    
  
     pass
 
-def move_to_edge(position, direction):
+def move_to_edge(robot):
     """ Move in starting direction to the edge of the grid.
 
     Args:
@@ -172,22 +188,22 @@ def move_to_edge(position, direction):
         column (int): Column coordinate
         
     """
-    if direction == 'North':
-        while position[0] != 0:
-            position = step(position, direction)
-    elif direction == 'South':
-        while position[0] != (grid_size - 1):
-            position = step(position, direction)      
-    elif direction == 'East':
-        while position[1] != (grid_size - 1):
-            position = step(position, direction)
-    elif direction == 'West':
-        while position[1] != 0:
-            position = step(position, direction)
+    if robot['direction'] == 'North':
+        while robot['position'][0] != 0:
+            robot = step(robot)
+    elif robot['direction'] == 'South':
+        while robot['position'][0] != (grid_size - 1):
+            robot = step(robot)      
+    elif robot['direction'] == 'East':
+        while robot['position'][1] != (grid_size - 1):
+            robot = step(robot)
+    elif robot['direction'] == 'West':
+        while robot['position'][1] != 0:
+            robot = step(robot)
 
-    return position
+    return robot
 
-def step(position, direction):
+def step(robot):
     """ Move in starting direction to the edge of the grid.
 
     Args:
@@ -200,27 +216,27 @@ def step(position, direction):
         column (int): Column coordinate
         
     """
-    if direction == 'North':
+    if robot['direction'] == 'North':
         print('Moving one step forward') 
-        position = (position[0] - 1, position[1]) 
-        print_location_direction(position, direction)
-    elif direction == 'South':        
+        robot['position'][0] -= 1
+        print_location_direction(robot)
+    elif robot['direction'] == 'South':        
         print('Moving one step forward') 
-        position = (position[0] + 1, position[1])
-        print_location_direction(position, direction)
-    elif direction == 'East':        
+        robot['position'][0] += 1
+        print_location_direction(robot)
+    elif robot['direction'] == 'East':        
         print('Moving one step forward') 
-        position = (position[0], position[1] + 1)
-        print_location_direction(position, direction)    
-    elif direction == 'West':
+        robot['position'][1] += 1
+        print_location_direction(robot)    
+    elif robot['direction'] == 'West':
         print('Moving one step forward') 
-        position = (position[0], position[1] - 1)
-        print_location_direction(position, direction)
+        robot['position'][1] -= 1
+        print_location_direction(robot)
     
-    return position
+    return robot
     
 
-def rotate(directions, direction):
+def rotate(directions, robot):
     """ Rotate 90 degrees clockwise.
 
     Args:
@@ -233,11 +249,11 @@ def rotate(directions, direction):
     """
     print('I have a wall in front of me')
     print('Turning 90 degrees clockwise')
-    index = directions.index(direction)
+    index = directions.index(robot['direction'])
     index = (index + 1) % 4
-    direction = directions[index]
+    robot['direction'] = directions[index]
     
-    return direction
+    return robot
     
 
 # Root function
@@ -255,26 +271,28 @@ def run_simulation(grid_size=10):
     Return:
     
     """
-    names = get_names_list('robot_names.txt')
-    identifier = 1000
-
-    for name in names:
-        identifier += 1
-        print_name_id(name, identifier)
+    names, ids = print_group_names_ids()
 
     print()
 
+    robots = []
+
     for i in range(len(names)):
         name = names[i]
+        identifier = ids[i]
+        robot, directions = set_up_robot(grid_size, name, identifier)
+        robots.append(robot)
         target_position = get_targets(i)
         print(f"{name} is searching for its drink")
-        position, direction, directions = set_up_robot(grid_size)
-        print_location_direction(position, direction)
-        navigate(position, direction, directions, grid_size, target_position)
+        
+        
+        print_location_direction(robot)
+        navigate(robot, directions, grid_size, target_position)
         print()
     
     pass
 
+# robot = {"id": 1001, "name": "Daft Punk", "position": (7, 6), "direction": "s"}
         
 
 grid_size = 10    # Global variable      
