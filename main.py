@@ -21,22 +21,16 @@ import random
 # Set up robot
 
 def set_up_robot(grid_size, name, identifer):
-    """ Set up details for the robot starting position and grid
+    """Set up the robot's initial position, direction, and associated details.
 
     Args:
         grid_size (int): The size of the grid.
-        target_row (int): The target row coordinate.
-        target_col (int): The target column coordinate. 
-        
+        name (str): Name of the robot.
+        identifier (int): Unique ID for the robot.
+
     Returns:
-        name (str): Name of robot.
-        identifier (int): ID
-        row (int): Row coordinate
-        column (int): Column coordinate 
-        direction (str): Direction string
-        directions (list): List of possible directions
-        drink (str): Favourite drink of the robot
-        
+        robot (dict): A dictionary containing the robot's ID, name, position, and direction.
+        directions (list): A list of possible directions the robot can face.
     """ 
 
     position = get_random_start(grid_size)
@@ -53,8 +47,7 @@ def get_random_start(grid_size):
         grid_size (int): The size of the grid.
 
     Returns:
-        row (int): Row coordinate
-        column (int): Column coordinate
+        position (tuple): A tuple representing the robot's row and column coordinates.
     """
     position = tuple(random.sample(range(grid_size - 1), 2))
     return position
@@ -77,6 +70,14 @@ def get_random_direction():
     return direction, directions
 
 def get_names_list(filename):
+    """Load a list of robot names from a file and randomly select three.
+
+    Args:
+        filename (str): The name of the file containing robot names.
+
+    Returns:
+        names (list): A list of three randomly selected robot names.
+    """
     all_names = []
     textfile = open(filename)
     for line in textfile:
@@ -87,6 +88,14 @@ def get_names_list(filename):
     return names
 
 def get_targets(i):
+    """Get the target position for a robot based on its index.
+
+    Args:
+        i (int): The index of the robot.
+
+    Returns:
+        target_position (tuple): A tuple representing the target row and column coordinates.
+    """
     targets = [(9,9),(9,0),(0,9)]
     target_position = targets[i]    
     return target_position
@@ -94,21 +103,17 @@ def get_targets(i):
 # Print robot greeting
 
 def print_greeting(name, identifier, position , direction):
-    """ Print robot greeting.
+    """Print a greeting message that includes the robot's name, ID, position, and direction.
 
     Args:
-        name (int): Name
-        identifier (int): ID
-        row (int): Row coordinate
-        column (int): Column coordinate
-        direction (str): Direction string
-
+        name (str): The robot's name.
+        identifier (int): The robot's ID.
+        position (tuple): The robot's current row and column coordinates.
+        direction (str): The robot's current direction.
     """
     print_name_id(name, identifier)
     print_location_direction(position, direction)
-    # drink = input('What is their favourite drink? ')
-    # print(f"There is a glass of {drink} at position ({target_row}, {target_col}).")
-    # input('Ready? ')
+
     pass
 
 def print_name_id(name, identifier):
@@ -126,14 +131,18 @@ def print_location_direction(robot):
     """ Print message with location and direction.
 
     Args:
-        row (int): Row coordinate
-        column (int): Column coordinate
-        direction (str): Direction string
+        robot (dict): A dictionary containing the robot's details, including position and direction.
     """
     print(f"My current location is {robot['position']}. I am facing {robot['direction']}.")
     pass
 
 def print_group_names_ids():
+    """Print the names and IDs of a group of robots.
+
+    Returns:
+        names (list): A list of robot names.
+        ids (list): A list of robot IDs.
+    """
 
     names = get_names_list('robot_names.txt')
     identifier = 1000
@@ -149,23 +158,22 @@ def print_group_names_ids():
 # Navigate to drink
 
 def navigate(robot, directions, grid_size, target_position):
-    """ Navigate to the target. Move to edge. Rotate 90 clcokwise while not at target.
+    """Navigate the robot towards its target position.
+
+    The robot moves to the edge of the grid in its current direction, then rotates 90 degrees clockwise
+    if it has not reached the target, and repeats the process until it reaches the target.
 
     Args:
-        row (int): Row coordinate
-        column (int): Column coordinate
-        direction (str): Direction string
-        directions (list): List of possible directions
-        grid_size (int): Size of NxN grid
-        target_row (int): The target row coordinate.
-        target_col (int): The target column coordinate.
-        drink (str): Favourite drink of the robot.
-        
+        robot (dict): A dictionary containing the robot's details, including position and direction.
+        directions (list): A list of possible directions the robot can face.
+        grid_size (int): The size of the grid.
+        target_position (tuple): The target row and column coordinates.
     """
-    while robot['position'][0] != target_position[0] or robot['position'][1] != target_position[1]:
-        robot = move_to_edge(robot)
+    while not is_bot_at_target(robot, target_position): 
 
-        if robot['position'][0] == target_position[0] and robot['position'][1] == target_position[1]:
+        robot = move_to_edge(robot, grid_size)
+
+        if is_bot_at_target(robot, target_position):
             break
 
         robot = rotate(directions, robot)
@@ -174,78 +182,94 @@ def navigate(robot, directions, grid_size, target_position):
  
     pass
 
-def move_to_edge(robot):
-    """ Move in starting direction to the edge of the grid.
+def is_bot_at_target(robot, target_position):
+    """Check if the robot has reached its target position.
 
     Args:
-        row (int): Row coordinate
-        column (int): Column coordinate
-        direction (str): Direction string
-        grid_size (int): GLOBAL variable for the grid size
-        
-    Return:
-        row (int): Row coordinate
-        column (int): Column coordinate
-        
-    """
-    if robot['direction'] == 'North':
-        while robot['position'][0] != 0:
-            robot = step(robot)
-    elif robot['direction'] == 'South':
-        while robot['position'][0] != (grid_size - 1):
-            robot = step(robot)      
-    elif robot['direction'] == 'East':
-        while robot['position'][1] != (grid_size - 1):
-            robot = step(robot)
-    elif robot['direction'] == 'West':
-        while robot['position'][1] != 0:
-            robot = step(robot)
+        robot (dict): A dictionary containing the robot's details, including position.
+        target_position (tuple): The target row and column coordinates.
 
+    Returns:
+        bool: True if the robot is at the target position, False otherwise.
+    """
+    
+    return robot['position'][0] == target_position[0] and robot['position'][1] == target_position[1]
+
+def is_bot_facing_wall(robot, grid_size):
+    """Check if the robot is facing a wall (edge of the grid).
+
+    Args:
+        robot (dict): A dictionary containing the robot's details, including position and direction.
+        grid_size (int): The size of the grid.
+
+    Returns:
+        facing_wall (bool): True if the robot is facing a wall, False otherwise.
+    """
+
+    row = robot['position'][0]
+    col = robot['position'][1]
+    direction = robot['direction']
+
+    return (direction == 'North' and row == 0
+           or direction == 'East' and col == (grid_size - 1)
+           or direction == 'South' and row == (grid_size - 1)
+           or direction == 'West' and col == 0)
+
+        
+def move_to_edge(robot, grid_size):
+    """Move the robot in its current direction until it reaches the edge of the grid.
+
+    Args:
+        robot (dict): A dictionary containing the robot's details, including position and direction.
+        grid_size (int): The size of the grid.
+
+    Returns:
+        robot (dict): The updated robot dictionary with its new position.
+    """
+
+    while not is_bot_facing_wall(robot, grid_size):
+        print('Moving one step forward')
+        robot = step(robot)
+        print_location_direction(robot)
+    
     return robot
 
 def step(robot):
-    """ Move in starting direction to the edge of the grid.
+    """Move the robot one step in its current direction.
 
     Args:
-        row (int): Row coordinate
-        column (int): Column coordinate
-        direction (str): Direction string
-        
-    Return:
-        row (int): Row coordinate
-        column (int): Column coordinate
-        
+        robot (dict): A dictionary containing the robot's details, including position and direction.
+
+    Returns:
+        robot (dict): The updated robot dictionary with its new position.
     """
-    if robot['direction'] == 'North':
-        print('Moving one step forward') 
-        robot['position'] = (robot['position'][0] - 1, robot['position'][1])
-        print_location_direction(robot)
-    elif robot['direction'] == 'South':        
-        print('Moving one step forward') 
-        robot['position'] = (robot['position'][0] + 1, robot['position'][1])
-        print_location_direction(robot)
-    elif robot['direction'] == 'East':        
-        print('Moving one step forward') 
-        robot['position'] = (robot['position'][0], robot['position'][1] + 1)
-        print_location_direction(robot)    
-    elif robot['direction'] == 'West':
-        print('Moving one step forward') 
-        robot['position'] = (robot['position'][0], robot['position'][1] - 1)
-        print_location_direction(robot)
+    row = robot['position'][0]
+    col = robot['position'][1]
+    direction = robot['direction']
+    
+    if direction == 'North':
+        row -= 1 
+    elif direction == 'South':         
+        row += 1 
+    elif direction == 'East':        
+        col += 1  
+    elif direction == 'West':
+        col -= 1
+        
+    robot['position'] = (row, col)
     
     return robot
     
 
 def rotate(directions, robot):
-    """ Rotate 90 degrees clockwise.
+    """Rotate the robot 90 degrees clockwise.
 
     Args:
-        directions (list): List of possible directions
-        direction (str): Direction string
-        
-    Return:
-        direction (str): Direction string
-        
+        directions (list): A list of possible directions.
+        robot (dict): A dictionary containing the robot's details, including direction.
+
+    Returns:
+        robot (dict): The updated robot dictionary with its new direction.
     """
     print('I have a wall in front of me')
     print('Turning 90 degrees clockwise')
@@ -259,18 +283,15 @@ def rotate(directions, robot):
 # Root function
 
 def run_simulation(grid_size=10):
-    """ Start robot navigation simulation.
+    """Start the robot navigation simulation.
 
-        Print name and ID for each robot. Then navigate for each robot.
+    Print the name and ID for each robot, then navigate each robot towards its target position.
 
     Args:
         grid_size (int): The size of the grid. Defaults to 10.
-        target_row (int): The target row coordinate. Defaults to 9.
-        target_col (int): The target column coordinate. Defaults to 9.
-
-    Return:
-    
     """
+    # Get three random robot names and IDs. Means you cant pick same name twice.
+    
     names, ids = print_group_names_ids()
 
     print()
@@ -278,20 +299,31 @@ def run_simulation(grid_size=10):
     robots = []
 
     for i in range(len(names)):
+
+        # Initialise robot position and direction. Store in dictionary.
         name = names[i]
         identifier = ids[i]
         robot, directions = set_up_robot(grid_size, name, identifier)
         robots.append(robot)
         target_position = get_targets(i)
+
+        # Search for drink
         print(f"{name} is searching for its drink")
         print_location_direction(robot)
         navigate(robot, directions, grid_size, target_position)
         print()
     
-    pass
-
-
-        
+    pass        
 
 grid_size = 10    # Global variable      
 run_simulation()
+
+
+
+
+
+
+
+
+
+
