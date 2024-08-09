@@ -22,7 +22,7 @@ import random
 
 # Set up robot
 
-def set_up_robot(grid_size, name, identifier):
+def set_up_robot(grid_size, all_names, prev_id):
     """Set up the robot's initial position, direction, and associated details.
 
     Args:
@@ -35,6 +35,8 @@ def set_up_robot(grid_size, name, identifier):
         directions (list): A list of possible directions the robot can face.
     """ 
 
+    name = generate_robot_name(all_names)
+    identifier = generate_robot_id(prev_id)
     position = get_random_start(grid_size)
     direction, directions = get_random_direction()
 
@@ -71,23 +73,51 @@ def get_random_direction():
     direction = random.choice(directions)
     return direction, directions
 
-def get_names_list(filename):
-    """Load a list of robot names from a file and randomly select three.
+def get_name_candidates(filename):
+    """Load a list of robot names from a file..
 
     Args:
         filename (str): The name of the file containing robot names.
 
     Returns:
-        names (list): A list of three randomly selected robot names.
+        names (list): A list of possible robot names.
     """
     all_names = []
-    textfile = open(filename)
-    for line in textfile:
-        line = line.strip()
-        all_names.append(line)
+    with open(filename) as textfile:
+        for line in textfile:
+            line = line.strip()
+            all_names.append(line)
 
-    names = random.sample(all_names,3)
-    return names
+    return all_names
+
+def generate_robot_name(all_names):
+    """ Select a robot's name at random from a given list
+
+    Args:
+        namelist (list): A list of candidate names. Will return "Robot" if not provided.
+        
+    Returns:
+        str : Robot name
+    """
+    if len(all_names) > 0:
+        return random.choice(all_names)
+    else:
+        return "Robot"
+
+def generate_robot_id(prev_id):
+    """ Generate a unique ID for the robot. 
+
+    If prev_id is given and is >=0, the function will return prev_id+1
+    Otherwise, the function will generate a random number between 1 to 1,000,000 as an ID.
+
+    Returns:
+        int : robot ID
+    """
+    if prev_id >= 0:
+        return prev_id + 1
+    else:
+        return random.randint(1, 1000000)
+
 
 def get_targets(i):
     """Get the target position for a robot based on its index.
@@ -144,26 +174,36 @@ def run_simulation(grid_size=10):
     Args:
         grid_size (int): The size of the grid. Defaults to 10.
     """
-    # Get three random robot names and IDs. Means you cant pick same name twice.
-    
-    names, ids = print_group_names_ids()
 
-    print()
+    # Get possible candidate names
+
+    all_names = get_name_candidates('robot_names.txt')
+
+    # Initialise robots
 
     robots = []
+    prev_id = 1000
 
-    for i in range(len(names)):
-
-        # Initialise robot position and direction. Store in dictionary.
-        name = names[i]
-        identifier = ids[i]
-        robot, directions = set_up_robot(grid_size, name, identifier)
+    for i in range(3):
+        robot, directions = set_up_robot(grid_size, all_names, prev_id)
         robots.append(robot)
-        target_position = get_targets(i)
+        prev_id = robot.id
+        
 
-        # Search for drink
-        print(f"{name} is searching for its drink")
+    # Print greeting for each robot
+
+    for robot in robots:
+        print_name_id(robot.name, robot.id)
+    
+    print() # New line
+
+    # Each robot navigate to drink
+
+    for i in range(3):
+
+        print(f"{robots[i].name} is searching for its drink")
         robot.print_location_direction()
+        target_position = get_targets(i)
         robot.navigate(directions, grid_size, target_position)
         print()
     
