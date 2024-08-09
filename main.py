@@ -213,6 +213,9 @@ grid_size = 10    # Global variable
 run_simulation()
 
 
+# name name sample unique
+# put greeting action into robot class
+# add number of robots variable 
 
 
 
