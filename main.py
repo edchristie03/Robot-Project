@@ -1,4 +1,6 @@
+from robot import Robot
 import random
+
 '''
 1. Set up robot
     a. Get name
@@ -20,7 +22,7 @@ import random
 
 # Set up robot
 
-def set_up_robot(grid_size, name, identifer):
+def set_up_robot(grid_size, name, identifier):
     """Set up the robot's initial position, direction, and associated details.
 
     Args:
@@ -36,7 +38,7 @@ def set_up_robot(grid_size, name, identifer):
     position = get_random_start(grid_size)
     direction, directions = get_random_direction()
 
-    robot = {"id": identifer, "name": name, "position": position, "direction": direction}
+    robot = Robot(identifier, name, position, direction)
     
     return robot, directions
 
@@ -102,20 +104,6 @@ def get_targets(i):
 
 # Print robot greeting
 
-def print_greeting(name, identifier, position , direction):
-    """Print a greeting message that includes the robot's name, ID, position, and direction.
-
-    Args:
-        name (str): The robot's name.
-        identifier (int): The robot's ID.
-        position (tuple): The robot's current row and column coordinates.
-        direction (str): The robot's current direction.
-    """
-    print_name_id(name, identifier)
-    print_location_direction(position, direction)
-
-    pass
-
 def print_name_id(name, identifier):
     """ Print message with name and ID.
 
@@ -133,7 +121,7 @@ def print_location_direction(robot):
     Args:
         robot (dict): A dictionary containing the robot's details, including position and direction.
     """
-    print(f"My current location is {robot['position']}. I am facing {robot['direction']}.")
+    print(f"My current location is {robot.position}. I am facing {robot.direction}.")
     pass
 
 def print_group_names_ids():
@@ -193,7 +181,7 @@ def is_bot_at_target(robot, target_position):
         bool: True if the robot is at the target position, False otherwise.
     """
     
-    return robot['position'][0] == target_position[0] and robot['position'][1] == target_position[1]
+    return robot.position[0] == target_position[0] and robot.position[1] == target_position[1]
 
 def is_bot_facing_wall(robot, grid_size):
     """Check if the robot is facing a wall (edge of the grid).
@@ -206,9 +194,9 @@ def is_bot_facing_wall(robot, grid_size):
         facing_wall (bool): True if the robot is facing a wall, False otherwise.
     """
 
-    row = robot['position'][0]
-    col = robot['position'][1]
-    direction = robot['direction']
+    row = robot.position[0]
+    col = robot.position[1]
+    direction = robot.direction
 
     return (direction == 'North' and row == 0
            or direction == 'East' and col == (grid_size - 1)
@@ -243,9 +231,9 @@ def step(robot):
     Returns:
         robot (dict): The updated robot dictionary with its new position.
     """
-    row = robot['position'][0]
-    col = robot['position'][1]
-    direction = robot['direction']
+    row = robot.position[0]
+    col = robot.position[1]
+    direction = robot.direction
     
     if direction == 'North':
         row -= 1 
@@ -256,7 +244,7 @@ def step(robot):
     elif direction == 'West':
         col -= 1
         
-    robot['position'] = (row, col)
+    robot.position = (row, col)
     
     return robot
     
@@ -273,9 +261,9 @@ def rotate(directions, robot):
     """
     print('I have a wall in front of me')
     print('Turning 90 degrees clockwise')
-    index = directions.index(robot['direction'])
+    index = directions.index(robot.direction)
     index = (index + 1) % 4
-    robot['direction'] = directions[index]
+    robot.direction = directions[index]
     
     return robot
     
