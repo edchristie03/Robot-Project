@@ -115,14 +115,6 @@ def print_name_id(name, identifier):
     print(f"Hello. My name is {name}. My ID is {identifier}.")
     pass
 
-def print_location_direction(robot):
-    """ Print message with location and direction.
-
-    Args:
-        robot (dict): A dictionary containing the robot's details, including position and direction.
-    """
-    print(f"My current location is {robot.position}. I am facing {robot.direction}.")
-    pass
 
 def print_group_names_ids():
     """Print the names and IDs of a group of robots.
@@ -141,132 +133,6 @@ def print_group_names_ids():
         ids.append(identifier)
         print_name_id(name, identifier)
     return names, ids
-    
-
-# Navigate to drink
-
-def navigate(robot, directions, grid_size, target_position):
-    """Navigate the robot towards its target position.
-
-    The robot moves to the edge of the grid in its current direction, then rotates 90 degrees clockwise
-    if it has not reached the target, and repeats the process until it reaches the target.
-
-    Args:
-        robot (dict): A dictionary containing the robot's details, including position and direction.
-        directions (list): A list of possible directions the robot can face.
-        grid_size (int): The size of the grid.
-        target_position (tuple): The target row and column coordinates.
-    """
-    while not is_bot_at_target(robot, target_position): 
-
-        robot = move_to_edge(robot, grid_size)
-
-        if is_bot_at_target(robot, target_position):
-            break
-
-        robot = rotate(directions, robot)
-
-    print(f"I am drinking milk, I am happy!")    
- 
-    pass
-
-def is_bot_at_target(robot, target_position):
-    """Check if the robot has reached its target position.
-
-    Args:
-        robot (dict): A dictionary containing the robot's details, including position.
-        target_position (tuple): The target row and column coordinates.
-
-    Returns:
-        bool: True if the robot is at the target position, False otherwise.
-    """
-    
-    return robot.position[0] == target_position[0] and robot.position[1] == target_position[1]
-
-def is_bot_facing_wall(robot, grid_size):
-    """Check if the robot is facing a wall (edge of the grid).
-
-    Args:
-        robot (dict): A dictionary containing the robot's details, including position and direction.
-        grid_size (int): The size of the grid.
-
-    Returns:
-        facing_wall (bool): True if the robot is facing a wall, False otherwise.
-    """
-
-    row = robot.position[0]
-    col = robot.position[1]
-    direction = robot.direction
-
-    return (direction == 'North' and row == 0
-           or direction == 'East' and col == (grid_size - 1)
-           or direction == 'South' and row == (grid_size - 1)
-           or direction == 'West' and col == 0)
-
-        
-def move_to_edge(robot, grid_size):
-    """Move the robot in its current direction until it reaches the edge of the grid.
-
-    Args:
-        robot (dict): A dictionary containing the robot's details, including position and direction.
-        grid_size (int): The size of the grid.
-
-    Returns:
-        robot (dict): The updated robot dictionary with its new position.
-    """
-
-    while not is_bot_facing_wall(robot, grid_size):
-        print('Moving one step forward')
-        robot = step(robot)
-        print_location_direction(robot)
-    
-    return robot
-
-def step(robot):
-    """Move the robot one step in its current direction.
-
-    Args:
-        robot (dict): A dictionary containing the robot's details, including position and direction.
-
-    Returns:
-        robot (dict): The updated robot dictionary with its new position.
-    """
-    row = robot.position[0]
-    col = robot.position[1]
-    direction = robot.direction
-    
-    if direction == 'North':
-        row -= 1 
-    elif direction == 'South':         
-        row += 1 
-    elif direction == 'East':        
-        col += 1  
-    elif direction == 'West':
-        col -= 1
-        
-    robot.position = (row, col)
-    
-    return robot
-    
-
-def rotate(directions, robot):
-    """Rotate the robot 90 degrees clockwise.
-
-    Args:
-        directions (list): A list of possible directions.
-        robot (dict): A dictionary containing the robot's details, including direction.
-
-    Returns:
-        robot (dict): The updated robot dictionary with its new direction.
-    """
-    print('I have a wall in front of me')
-    print('Turning 90 degrees clockwise')
-    index = directions.index(robot.direction)
-    index = (index + 1) % 4
-    robot.direction = directions[index]
-    
-    return robot
-    
 
 # Root function
 
@@ -297,8 +163,8 @@ def run_simulation(grid_size=10):
 
         # Search for drink
         print(f"{name} is searching for its drink")
-        print_location_direction(robot)
-        navigate(robot, directions, grid_size, target_position)
+        robot.print_location_direction()
+        robot.navigate(directions, grid_size, target_position)
         print()
     
     pass        
