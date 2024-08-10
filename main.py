@@ -133,12 +133,12 @@ def get_targets(i):
     Returns:
         target_position (tuple): A tuple representing the target row and column coordinates.
     """
-    targets = [(9,9),(9,0),(0,9)]
+    targets = [(9,9),(9,0),(0,9),(0,0)]
     target_position = targets[i]    
     return target_position
 
 # Print robot greeting
-
+'''
 def print_name_id(name, identifier):
     """ Print message with name and ID.
 
@@ -149,25 +149,7 @@ def print_name_id(name, identifier):
     """
     print(f"Hello. My name is {name}. My ID is {identifier}.")
     pass
-
-
-def print_group_names_ids():
-    """Print the names and IDs of a group of robots.
-
-    Returns:
-        names (list): A list of robot names.
-        ids (list): A list of robot IDs.
-    """
-
-    names = get_names_list('robot_names.txt')
-    identifier = 1000
-    ids = []
-
-    for name in names:
-        identifier += 1
-        ids.append(identifier)
-        print_name_id(name, identifier)
-    return names, ids
+'''
 
 # Root function
 
@@ -199,7 +181,7 @@ def run_simulation(grid_size=10, n_of_robots=3):
     # Print greeting for each robot
 
     for robot in robots:
-        print_name_id(robot.name, robot.id)
+        robot.print_name_id()
     
     print() # New line
 
@@ -216,11 +198,10 @@ def run_simulation(grid_size=10, n_of_robots=3):
     pass        
 
 grid_size = 10 # Global variable
-n_of_robots = 3
+n_of_robots = 4
 run_simulation(grid_size, n_of_robots)
 
 
-# target generation needs n_of_robots as input
 # put greeting action into robot class
 
 

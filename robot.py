@@ -6,6 +6,17 @@ class Robot:
         self.position = position
         self.direction = direction
 
+    def print_name_id(self):
+        """ Print message with name and ID.
+
+        Args:
+            name (int): Name
+            identifier (int): ID
+        
+        """
+        print(f"Hello. My name is {self.name}. My ID is {self.id}.")
+        pass
+
 
     def step(self):
         """Move the robot one step in its current direction.
