@@ -1,4 +1,4 @@
-hi
+
 class Robot:
     def __init__(self, identifier, name, position, direction):
         self.id = identifier

@@ -22,7 +22,7 @@ import random
 
 # Set up robot
 
-def set_up_robot(grid_size, all_names, prev_id):
+def set_up_robot(grid_size, all_names, prev_id, chosen_names):
     """Set up the robot's initial position, direction, and associated details.
 
     Args:
@@ -35,7 +35,7 @@ def set_up_robot(grid_size, all_names, prev_id):
         directions (list): A list of possible directions the robot can face.
     """ 
 
-    name = generate_robot_name(all_names)
+    name = generate_robot_name(all_names, chosen_names)
     identifier = generate_robot_id(prev_id)
     position = get_random_start(grid_size)
     direction, directions = get_random_direction()
@@ -90,7 +90,7 @@ def get_name_candidates(filename):
 
     return all_names
 
-def generate_robot_name(all_names):
+def generate_robot_name(all_names, chosen_names):
     """ Select a robot's name at random from a given list
 
     Args:
@@ -100,7 +100,12 @@ def generate_robot_name(all_names):
         str : Robot name
     """
     if len(all_names) > 0:
-        return random.choice(all_names)
+        name = random.choice(all_names)
+        if name not in chosen_names:
+            chosen_names.append(name)
+            return name
+        else:
+            return generate_robot_name(all_names, chosen_names)
     else:
         return "Robot"
 
@@ -166,7 +171,7 @@ def print_group_names_ids():
 
 # Root function
 
-def run_simulation(grid_size=10):
+def run_simulation(grid_size=10, n_of_robots=3):
     """Start the robot navigation simulation.
 
     Print the name and ID for each robot, then navigate each robot towards its target position.
@@ -183,9 +188,10 @@ def run_simulation(grid_size=10):
 
     robots = []
     prev_id = 1000
+    chosen_names =[]
 
-    for i in range(3):
-        robot, directions = set_up_robot(grid_size, all_names, prev_id)
+    for i in range(n_of_robots):
+        robot, directions = set_up_robot(grid_size, all_names, prev_id, chosen_names)
         robots.append(robot)
         prev_id = robot.id
         
@@ -199,7 +205,7 @@ def run_simulation(grid_size=10):
 
     # Each robot navigate to drink
 
-    for i in range(3):
+    for i in range(n_of_robots):
 
         print(f"{robots[i].name} is searching for its drink")
         robot.print_location_direction()
@@ -209,13 +215,14 @@ def run_simulation(grid_size=10):
     
     pass        
 
-grid_size = 10    # Global variable      
-run_simulation()
+grid_size = 10 # Global variable
+n_of_robots = 3
+run_simulation(grid_size, n_of_robots)
 
 
-# name name sample unique
+# target generation needs n_of_robots as input
 # put greeting action into robot class
-# add number of robots variable 
+
 
 
 
