@@ -1,5 +1,5 @@
 from robot import Robot
-from robot_init import set_up_robot
+from robot_init import RobotFactory
 import random
 
 
@@ -53,15 +53,9 @@ def run_simulation(grid_size=10, n_of_robots=3):
 
     # Initialise robots
 
-    robots = []
-    prev_id = 1000
-    chosen_names =[]
-
-    for i in range(n_of_robots):
-        robot, directions = set_up_robot(grid_size, all_names, prev_id, chosen_names)
-        robots.append(robot)
-        prev_id = robot.id
-        
+    #prev_id = 1000
+    robot_factory = RobotFactory(grid_size)
+    robots, directions = robot_factory.create_robots(n_of_robots, all_names)  
 
     # Print greeting for each robot
 
