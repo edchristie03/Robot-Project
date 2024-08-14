@@ -1,10 +1,11 @@
 
 class Robot:
-    def __init__(self, identifier, name, position, direction):
+    def __init__(self, identifier, name, position, direction, directions=['North','East','South','West']):
         self.id = identifier
         self.name = name
         self.position = position
         self.direction = direction
+        self.directions = directions
 
     def print_name_id(self):
         """ Print message with name and ID.
@@ -44,7 +45,7 @@ class Robot:
         
         return 
 
-    def rotate(self, directions):
+    def rotate(self):
         """Rotate the robot 90 degrees clockwise.
 
         Args:
@@ -56,9 +57,9 @@ class Robot:
         """
         print('I have a wall in front of me')
         print('Turning 90 degrees clockwise')
-        index = directions.index(self.direction)
+        index = self.directions.index(self.direction)
         index = (index + 1) % 4
-        self.direction = directions[index]
+        self.direction = self.directions[index]
         
         return 
 
@@ -80,7 +81,7 @@ class Robot:
         
         return 
 
-    def navigate(self, directions, grid_size, target_position):
+    def navigate(self, grid_size, target_position):
         """Navigate the robot towards its target position.
 
         The robot moves to the edge of the grid in its current direction, then rotates 90 degrees clockwise
@@ -99,7 +100,7 @@ class Robot:
             if self.is_bot_at_target(target_position):
                 break
 
-            self.rotate(directions)
+            self.rotate()
 
         print(f"I am drinking milk, I am happy!")    
      

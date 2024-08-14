@@ -5,25 +5,23 @@ from robot import Robot
 
 class RobotFactory:
     
-    def __init__(self, grid_size, chosen_names=[], prev_id=1000):
+    def __init__(self, grid_size, all_names, chosen_names=[], prev_id=1000):
         self.chosen_names = chosen_names
         self.prev_id = prev_id
         self.grid_size = grid_size
+        self.all_names = all_names
 
-    def create_robots(self, n_of_robots, all_names):
+    def create_robots(self, n_of_robots):
 
         robots = []
-        prev_id = 1000
 
         for i in range(n_of_robots):
-            robot, directions = self.set_up_robot(all_names)
+            robot = self.set_up_robot()
             robots.append(robot)
-            prev_id = robot.id
 
-        return robots, directions
+        return robots
 
-
-    def set_up_robot(self, all_names):
+    def set_up_robot(self):
         """Set up the robot's initial position, direction, and associated details.
 
         Args:
@@ -36,14 +34,14 @@ class RobotFactory:
             directions (list): A list of possible directions the robot can face.
         """ 
 
-        name = self.generate_robot_name(all_names)
+        name = self.generate_robot_name()
         identifier = self.generate_robot_id()
         position = self.get_random_start()
-        direction, directions = self.get_random_direction()
+        direction = self.get_random_direction()
 
         robot = Robot(identifier, name, position, direction)
         
-        return robot, directions
+        return robot
 
     def get_random_start(self):
         """ Random allocation of starting position.
@@ -54,8 +52,8 @@ class RobotFactory:
         Returns:
             position (tuple): A tuple representing the robot's row and column coordinates.
         """
-        position = tuple(random.sample(range(self.grid_size), 2))
-        return position
+          
+        return tuple(random.sample(range(self.grid_size), 2))
 
     def get_random_direction(self):
         """ Random allocation of starting direction.
@@ -69,10 +67,8 @@ class RobotFactory:
             direction (str): Direction string
             directions (list): List of possible directions
             
-        """
-        directions = ['North','East','South','West']
-        direction = random.choice(directions)
-        return direction, directions
+        """  
+        return random.choice(['North','East','South','West'])
 
     def generate_robot_id(self):
         """ Generate a unique ID for the robot. 
@@ -84,11 +80,12 @@ class RobotFactory:
             int : robot ID
         """
         if self.prev_id >= 0:
-            return self.prev_id + 1
+            self.prev_id += 1
+            return self.prev_id
         else:
             return random.randint(1, 1000000)
 
-    def generate_robot_name(self, all_names):
+    def generate_robot_name(self):
         """ Select a robot's name at random from a given list
 
         Args:
@@ -97,12 +94,12 @@ class RobotFactory:
         Returns:
             str : Robot name
         """
-        if len(all_names) > 0:
-            name = random.choice(all_names)
+        if len(self.all_names) > 0:
+            name = random.choice(self.all_names)
             if name not in self.chosen_names:
                 self.chosen_names.append(name)
                 return name
             else:
-                return self.generate_robot_name(all_names)
+                return self.generate_robot_name()
         else:
             return "Robot"

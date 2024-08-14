@@ -2,8 +2,6 @@ from robot import Robot
 from robot_init import RobotFactory
 import random
 
-
-
 def get_name_candidates(filename):
     """Load a list of robot names from a file..
 
@@ -48,14 +46,13 @@ def run_simulation(grid_size=10, n_of_robots=3):
     """
 
     # Get possible candidate names
-
+    
     all_names = get_name_candidates('robot_names.txt')
 
     # Initialise robots
 
-    #prev_id = 1000
-    robot_factory = RobotFactory(grid_size)
-    robots, directions = robot_factory.create_robots(n_of_robots, all_names)  
+    robot_factory = RobotFactory(grid_size, all_names)
+    robots = robot_factory.create_robots(n_of_robots)  
 
     # Print greeting for each robot
 
@@ -71,7 +68,7 @@ def run_simulation(grid_size=10, n_of_robots=3):
         print(f"{robots[i].name} is searching for its drink")
         robot.print_location_direction()
         target_position = get_targets(i)
-        robot.navigate(directions, grid_size, target_position)
+        robot.navigate(grid_size, target_position)
         print()
     
     pass        
@@ -79,6 +76,13 @@ def run_simulation(grid_size=10, n_of_robots=3):
 grid_size = 10 # Global variable
 n_of_robots = 4
 run_simulation(grid_size, n_of_robots)
+
+
+# neaten the factory module. 
+
+# change name of functions to make code more readable
+
+# update docustrings 
 
 
 
