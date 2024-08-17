@@ -1,5 +1,7 @@
 from robot import Robot
 from robot_init import RobotFactory
+from drink import Drink
+from drink_factory import DrinkFactory
 import random
 
 def get_name_candidates(filename):
@@ -19,7 +21,7 @@ def get_name_candidates(filename):
 
     return all_names
 
-
+'''
 def get_targets(i):
     """Get the target position for a robot based on its index.
 
@@ -32,7 +34,7 @@ def get_targets(i):
     targets = [(9,9),(9,0),(0,9),(0,0)]
     target_position = targets[i]    
     return target_position
-
+'''
 
 # Root function
 
@@ -52,7 +54,12 @@ def run_simulation(grid_size=10, n_of_robots=3):
     # Initialise robots
 
     robot_factory = RobotFactory(grid_size, all_names)
-    robots = robot_factory.create_robots(n_of_robots)  
+    robots = robot_factory.create_robots(n_of_robots)
+
+    # Initialise drinks
+
+    drink_factory = DrinkFactory(prev_id=1000)
+    drinks = drink_factory.create_drinks(n_of_robots)
 
     # Print greeting for each robot
 
@@ -66,9 +73,10 @@ def run_simulation(grid_size=10, n_of_robots=3):
     for i in range(n_of_robots):
 
         print(f"{robots[i].name} is searching for its drink")
-        robot.print_location_direction()
-        target_position = get_targets(i)
-        robot.navigate(grid_size, target_position)
+        
+        robots[i].print_location_direction()
+        
+        robots[i].navigate(grid_size, drinks[i].location)
         print()
     
     pass        
