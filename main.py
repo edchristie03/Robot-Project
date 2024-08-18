@@ -36,15 +36,28 @@ def run_simulation(grid_size=10, n_of_robots=3):
     
     all_names = get_name_candidates('robot_names.txt')
 
-    # Initialise robots
+    # Initialise robots and get their favourite drinks
 
     robot_factory = RobotFactory(grid_size, all_names)
-    robots = robot_factory.create_robots(n_of_robots)
+    robots, drinks = robot_factory.create_robots(n_of_robots)
 
-    # Initialise drinks
+    
 
-    drink_factory = DrinkFactory(prev_id=1000)
+    # Initialise the above favourite drinks
+
+    drink_factory = DrinkFactory(drinks)
     drinks = drink_factory.create_drinks(n_of_robots)
+
+    print(robots[0])
+    print(robots[1])
+    print(robots[2])
+    #print(robots[3])
+    print()
+    
+    print(drinks[0])
+    print(drinks[1])
+    print(drinks[2])
+    #print(drinks[3])
 
     # Print greeting for each robot
 
@@ -53,21 +66,23 @@ def run_simulation(grid_size=10, n_of_robots=3):
     print() # New line
 
     # Each robot navigate to drink
-    i = 0
+    
     for robot in robots:
 
         print(f"{robot.name} is searching for {robot.favourite_drink}.")
         
         robot.print_location_direction()
-        
-        robot.navigate(grid_size, drinks[i].location, robot.favourite_drink)
+
+        for drink in drinks:
+            if robot.favourite_drink == drink.name:
+                robot.navigate(grid_size, drink.location, drink.name)
         print()
-        i += 1
+        
     
     pass        
 
 grid_size = 10 # Global variable
-n_of_robots = 4
+n_of_robots = 3
 run_simulation(grid_size, n_of_robots)
 
 

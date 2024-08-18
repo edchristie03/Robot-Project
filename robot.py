@@ -152,6 +152,9 @@ class Robot:
         print(f"My current location is {self.position}. I am facing {self.direction}.")
         pass
 
+    def __str__(self):
+        return f"Robot called {self.name} with ID: {self.id}."
+
 
 
 
