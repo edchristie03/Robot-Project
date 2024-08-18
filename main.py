@@ -1,5 +1,5 @@
 from robot import Robot
-from robot_init import RobotFactory
+from robot_factory import RobotFactory
 from drink import Drink
 from drink_factory import DrinkFactory
 import random
@@ -20,21 +20,6 @@ def get_name_candidates(filename):
             all_names.append(line)
 
     return all_names
-
-'''
-def get_targets(i):
-    """Get the target position for a robot based on its index.
-
-    Args:
-        i (int): The index of the robot.
-
-    Returns:
-        target_position (tuple): A tuple representing the target row and column coordinates.
-    """
-    targets = [(9,9),(9,0),(0,9),(0,0)]
-    target_position = targets[i]    
-    return target_position
-'''
 
 # Root function
 
@@ -64,20 +49,20 @@ def run_simulation(grid_size=10, n_of_robots=3):
     # Print greeting for each robot
 
     for robot in robots:
-        robot.print_name_id()
-    
+        robot.greet()
     print() # New line
 
     # Each robot navigate to drink
+    i = 0
+    for robot in robots:
 
-    for i in range(n_of_robots):
-
-        print(f"{robots[i].name} is searching for its drink")
+        print(f"{robot.name} is searching for {robot.favourite_drink}.")
         
-        robots[i].print_location_direction()
+        robot.print_location_direction()
         
-        robots[i].navigate(grid_size, drinks[i].location)
+        robot.navigate(grid_size, drinks[i].location, robot.favourite_drink)
         print()
+        i += 1
     
     pass        
 
@@ -85,8 +70,6 @@ grid_size = 10 # Global variable
 n_of_robots = 4
 run_simulation(grid_size, n_of_robots)
 
-
-# neaten the factory module. 
 
 # change name of functions to make code more readable
 

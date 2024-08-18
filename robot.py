@@ -1,13 +1,14 @@
 
 class Robot:
-    def __init__(self, identifier, name, position, direction, directions=['North','East','South','West']):
+    def __init__(self, identifier, name, position, direction, favourite_drink, directions=['North','East','South','West']):
         self.id = identifier
         self.name = name
         self.position = position
         self.direction = direction
+        self.favourite_drink = favourite_drink
         self.directions = directions
 
-    def print_name_id(self):
+    def greet(self):
         """ Print message with name and ID.
 
         Args:
@@ -15,7 +16,7 @@ class Robot:
             identifier (int): ID
         
         """
-        print(f"Hello. My name is {self.name}. My ID is {self.id}.")
+        print(f"Hello. My name is {self.name}. My ID is {self.id}. My favourite drink is {self.favourite_drink}.")
         pass
 
 
@@ -81,7 +82,7 @@ class Robot:
         
         return 
 
-    def navigate(self, grid_size, target_position):
+    def navigate(self, grid_size, target_position, drink):
         """Navigate the robot towards its target position.
 
         The robot moves to the edge of the grid in its current direction, then rotates 90 degrees clockwise
@@ -102,7 +103,7 @@ class Robot:
 
             self.rotate()
 
-        print(f"I am drinking milk, I am happy!")    
+        print(f"I am drinking {drink}, I am happy!")    
      
         pass
 
