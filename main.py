@@ -41,23 +41,10 @@ def run_simulation(grid_size=10, n_of_robots=3):
     robot_factory = RobotFactory(grid_size, all_names)
     robots, drinks = robot_factory.create_robots(n_of_robots)
 
-    
-
     # Initialise the above favourite drinks
 
     drink_factory = DrinkFactory(drinks)
     drinks = drink_factory.create_drinks(n_of_robots)
-
-    print(robots[0])
-    print(robots[1])
-    print(robots[2])
-    #print(robots[3])
-    print()
-    
-    print(drinks[0])
-    print(drinks[1])
-    print(drinks[2])
-    #print(drinks[3])
 
     # Print greeting for each robot
 
