@@ -1,11 +1,12 @@
 
 class Robot:
-    def __init__(self, identifier, name, position, direction, favourite_drink, directions=['North','East','South','West']):
+    def __init__(self, identifier, name, position, direction, favourite_drink, grid, directions=['North','East','South','West']):
         self.id = identifier
         self.name = name
         self.position = position
         self.direction = direction
         self.favourite_drink = favourite_drink
+        self.grid = grid
         self.directions = directions
 
     def greet(self):
@@ -75,14 +76,14 @@ class Robot:
             robot (dict): The updated robot dictionary with its new position.
         """
 
-        while not self.is_bot_facing_wall(grid_size):
+        while not self.is_bot_facing_wall():
             print('Moving one step forward')
             self.step()
             self.print_location_direction()
         
         return 
 
-    def navigate(self, grid_size, target_position, drink):
+    def navigate(self, target_position, drink):
         """Navigate the robot towards its target position.
 
         The robot moves to the edge of the grid in its current direction, then rotates 90 degrees clockwise
@@ -96,7 +97,7 @@ class Robot:
         """
         while not self.is_bot_at_target(target_position): 
 
-            self.move_to_edge(grid_size)
+            self.move_to_edge(self.grid.size)
 
             if self.is_bot_at_target(target_position):
                 break
@@ -109,7 +110,7 @@ class Robot:
 
     
 
-    def is_bot_facing_wall(self, grid_size):
+    def is_bot_facing_wall(self):
         """Check if the robot is facing a wall (edge of the grid).
 
         Args:
@@ -125,8 +126,8 @@ class Robot:
         direction = self.direction
 
         return (direction == 'North' and row == 0
-               or direction == 'East' and col == (grid_size - 1)
-               or direction == 'South' and row == (grid_size - 1)
+               or direction == 'East' and col == (self.grid.size - 1)
+               or direction == 'South' and row == (self.grid.size - 1)
                or direction == 'West' and col == 0)
 
     def is_bot_at_target(self, target_position):

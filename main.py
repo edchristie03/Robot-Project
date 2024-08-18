@@ -1,8 +1,11 @@
+import random
+
 from robot import Robot
 from robot_factory import RobotFactory
-from drink import Drink
 from drink_factory import DrinkFactory
-import random
+from grid import Grid
+
+
 
 def get_name_candidates(filename):
     """Load a list of robot names from a file..
@@ -36,12 +39,16 @@ def run_simulation(grid_size=10, n_of_robots=3):
     
     all_names = get_name_candidates('robot_names.txt')
 
+    # Create grid instance
+
+    grid = Grid(grid_size)
+
     # Initialise robots and get their favourite drinks
 
-    robot_factory = RobotFactory(grid_size, all_names)
+    robot_factory = RobotFactory(grid, all_names)
     robots, drinks = robot_factory.create_robots(n_of_robots)
 
-    # Initialise the above favourite drinks
+    # Initialise the above favourite drinks locations
 
     drink_factory = DrinkFactory(drinks)
     drinks = drink_factory.create_drinks(n_of_robots)
@@ -62,7 +69,7 @@ def run_simulation(grid_size=10, n_of_robots=3):
 
         for drink in drinks:
             if robot.favourite_drink == drink.name:
-                robot.navigate(grid_size, drink.location, drink.name)
+                robot.navigate(drink.location, drink.name)
         print()
         
     
