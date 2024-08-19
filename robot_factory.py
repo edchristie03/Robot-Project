@@ -6,13 +6,29 @@ from robot import Robot
 class RobotFactory:
     
     def __init__(self, grid, all_names, chosen_names=[], prev_id=1000):
+        """Constructor for RobotFactory.
+
+        Args:
+            grid (Grid): The grid where robots will navigate.
+            all_names (list): A list of all possible robot names.
+            chosen_names (list): A list of robot names already chosen (default is empty).
+            prev_id (int): The previous robot ID, used to increment and assign unique IDs (default is 1000).
+        """
         self.grid = grid
         self.all_names = all_names
         self.chosen_names = chosen_names
         self.prev_id = prev_id
 
     def create_robots(self, n_of_robots):
+        """Creates a list of robots and their associated drinks.
 
+        Args:
+            n_of_robots (int): The number of robots to create.
+
+        Returns:
+            robots (list): A list of Robot objects.
+            drinks (list): A list of drinks associated with each robot.
+        """
         robots = []
         drinks = []
 
@@ -24,18 +40,11 @@ class RobotFactory:
         return robots, drinks
 
     def set_up_robot(self):
-        """Set up the robot's initial position, direction, and associated details.
-
-        Args:
-            grid_size (int): The size of the grid.
-            name (str): Name of the robot.
-            identifier (int): Unique ID for the robot.
+        """Sets up the robot's initial attributes including name, ID, position, direction, and favourite drink.
 
         Returns:
-            robot (dict): A dictionary containing the robot's ID, name, position, and direction.
-            directions (list): A list of possible directions the robot can face.
+            robot (Robot): A Robot object with the initialized attributes.
         """ 
-
         name = self.generate_robot_name()
         identifier = self.generate_robot_id()
         position = self.get_random_start()
@@ -47,40 +56,26 @@ class RobotFactory:
         return robot
 
     def get_random_start(self):
-        """ Random allocation of starting position.
-
-        Args:
-            grid_size (int): The size of the grid.
+        """Random allocation of starting position.
 
         Returns:
-            position (tuple): A tuple representing the robot's row and column coordinates.
-        """
-          
+            position (tuple): A tuple representing the robot's row and column coordinates on the grid.
+        """  
         return self.grid.generate_random_position()
 
     def get_random_direction(self):
-        """ Random allocation of starting direction.
-
-            Also defines the possible directions as a list of strings
-
-        Args:
-            none
+        """Randomly selects a starting direction for the robot.
 
         Returns:
-            direction (str): Direction string
-            directions (list): List of possible directions
-            
+            direction (str): The randomly selected direction ('North', 'East', 'South', 'West').
         """  
         return random.choice(['North','East','South','West'])
 
     def generate_robot_id(self):
-        """ Generate a unique ID for the robot. 
-
-        If prev_id is given and is >=0, the function will return prev_id+1
-        Otherwise, the function will generate a random number between 1 to 1,000,000 as an ID.
+        """Generates a unique ID for each robot, incrementing from the previous ID.
 
         Returns:
-            int : robot ID
+            identifier (int): A unique robot ID.
         """
         if self.prev_id >= 0:
             self.prev_id += 1
@@ -89,13 +84,10 @@ class RobotFactory:
             return random.randint(1, 1000000)
 
     def generate_robot_name(self):
-        """ Select a robot's name at random from a given list
+        """Selects a unique robot name from the list of available names.
 
-        Args:
-            namelist (list): A list of candidate names. Will return "Robot" if not provided.
-            
         Returns:
-            str : Robot name
+            name (str): The selected robot name.
         """
         if len(self.all_names) > 0:
             name = random.choice(self.all_names)
@@ -108,6 +100,14 @@ class RobotFactory:
             return "Robot"
 
     def get_favourite_drink(self, name):
+        """Retrieves the favourite drink for a robot based on its name.
+
+        Args:
+            name (str): The robot's name.
+
+        Returns:
+            drink (str): The favourite drink of the robot.
+        """
         drinks = {'Ed': 'Cider', 'Yosh': 'Maracuya', 'Sophie': 'Coffee', 'Hester': 'Milk', 'Ramon': 'Cerveza'}
         return drinks[name]
         

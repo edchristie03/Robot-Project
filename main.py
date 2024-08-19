@@ -1,11 +1,8 @@
 import random
 
-from robot import Robot
 from robot_factory import RobotFactory
 from drink_factory import DrinkFactory
 from grid import Grid
-
-
 
 def get_name_candidates(filename):
     """Load a list of robot names from a file..
@@ -29,10 +26,12 @@ def get_name_candidates(filename):
 def run_simulation(grid_size=10, n_of_robots=3):
     """Start the robot navigation simulation.
 
-    Print the name and ID for each robot, then navigate each robot towards its target position.
+    This function sets up a grid containing drinks, creates robots with random positions and favourite drinks,
+    and makes each robot navigate to find its drink on the grid.
 
     Args:
-        grid_size (int): The size of the grid. Defaults to 10.
+        grid_size (int): The size of the grid (default is 10).
+        n_of_robots (int): The number of robots to create and simulate (default is 3).
     """
 
     # Get possible candidate names
@@ -48,16 +47,23 @@ def run_simulation(grid_size=10, n_of_robots=3):
     robot_factory = RobotFactory(grid, all_names)
     robots, drinks = robot_factory.create_robots(n_of_robots)
 
-    # Initialise the above favourite drinks locations
+    # Create drink instances and store in list
 
     drink_factory = DrinkFactory(drinks)
     drinks = drink_factory.create_drinks(n_of_robots)
 
+    # Add drinks to grid
+
+    for drink in drinks:
+        grid.add_drink_at_random_corner(drink.name)
+
+    print(grid._cells)
+        
     # Print greeting for each robot
 
     for robot in robots:
         robot.greet()
-    print() # New line
+    print() 
 
     # Each robot navigate to drink
     
@@ -66,10 +72,8 @@ def run_simulation(grid_size=10, n_of_robots=3):
         print(f"{robot.name} is searching for {robot.favourite_drink}.")
         
         robot.print_location_direction()
+        robot.navigate()
 
-        for drink in drinks:
-            if robot.favourite_drink == drink.name:
-                robot.navigate(drink.location, drink.name)
         print()
         
     
