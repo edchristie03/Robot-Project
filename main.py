@@ -1,3 +1,5 @@
+
+
 import random
 
 from robot_factory import RobotFactory
@@ -42,21 +44,17 @@ def run_simulation(grid_size=10, n_of_robots=3):
 
     grid = Grid(grid_size)
 
-    # Initialise robots and get their favourite drinks
+    # Create and place drinks on the grid
+    
+    grid.create_and_place_drinks(n_of_robots)
+
+    # Create robots whose favourite drinks are already on the grid  
 
     robot_factory = RobotFactory(grid, all_names)
-    robots, drinks = robot_factory.create_robots(n_of_robots)
+    robots = robot_factory.create_robots(n_of_robots)
 
-    # Create drink instances and store in list
-
-    drink_factory = DrinkFactory(drinks)
-    drinks = drink_factory.create_drinks(n_of_robots)
-
-    # Add drinks to grid
-
-    for drink in drinks:
-        grid.add_drink_at_random_corner(drink.name)
-
+    # Print grid visualisation
+    
     print(grid._cells)
         
     # Print greeting for each robot
@@ -68,16 +66,14 @@ def run_simulation(grid_size=10, n_of_robots=3):
     # Each robot navigate to drink
     
     for robot in robots:
-
         print(f"{robot.name} is searching for {robot.favourite_drink}.")
-        
         robot.print_location_direction()
         robot.navigate()
-
         print()
         
     
-    pass        
+    pass
+    
 
 grid_size = 10 # Global variable
 n_of_robots = 3
@@ -88,6 +84,15 @@ run_simulation(grid_size, n_of_robots)
 
 # update docustrings 
 
+# the code creates the grid and the drinks first
+# therefore the reading of names as all_names is irrelevant as I have
+# hardcoded possible drinks and the robots with that as favourite drink in the
+# robotfactory class
+
+# maybe a better algorithm would be to initialise the grid and robots first
+# add the robot favourite drinks to the text file
+# then place drinks from randomly selected robots accordingly
+# could add competition for drinks
 
 
 

@@ -102,7 +102,7 @@ class Robot:
             self.rotate()
         
         print(f"I am drinking {self.favourite_drink}, I am happy!")    
-     
+        
         pass
 
     def is_bot_facing_wall(self):

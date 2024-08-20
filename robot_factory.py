@@ -1,6 +1,7 @@
 import random
 from robot import Robot
 
+
 # Set up robot
 
 class RobotFactory:
@@ -30,26 +31,28 @@ class RobotFactory:
             drinks (list): A list of drinks associated with each robot.
         """
         robots = []
-        drinks = []
+        drinks_on_grid = self.grid.drinks
 
         for i in range(n_of_robots):
-            robot = self.set_up_robot()
+            drink = drinks_on_grid[i]
+            robot = self.set_up_robot(drink)
             robots.append(robot)
-            drinks.append(robot.favourite_drink)
 
-        return robots, drinks
+        return robots
 
-    def set_up_robot(self):
+    # need to get name based on the drink using the dictionary
+
+    def set_up_robot(self, drink):
         """Sets up the robot's initial attributes including name, ID, position, direction, and favourite drink.
 
         Returns:
             robot (Robot): A Robot object with the initialized attributes.
         """ 
-        name = self.generate_robot_name()
+        name = self.get_name_from_drink(drink)
         identifier = self.generate_robot_id()
         position = self.get_random_start()
         direction = self.get_random_direction()
-        drink = self.get_favourite_drink(name)
+        drink = drink.name
 
         robot = Robot(identifier, name, position, direction, drink, self.grid)
         
@@ -82,6 +85,11 @@ class RobotFactory:
             return self.prev_id
         else:
             return random.randint(1, 1000000)
+
+    def get_name_from_drink(self, drink):
+        names = {'Cider': 'Ed', 'Maracuya': 'Yosh', 'Coffee': 'Sophie', 'Milk': 'Hester', 'Cerveza': 'Ramon'}
+        return names[drink.name]
+        
 
     def generate_robot_name(self):
         """Selects a unique robot name from the list of available names.
