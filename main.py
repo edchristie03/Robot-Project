@@ -1,13 +1,13 @@
-
-
 import random
+
 
 from robot_factory import RobotFactory
 from drink_factory import DrinkFactory
 from grid import Grid
 
+
 def get_name_candidates(filename):
-    """Load a list of robot names from a file..
+    """Load a list of robot names from a file.
 
     Args:
         filename (str): The name of the file containing robot names.
@@ -28,8 +28,9 @@ def get_name_candidates(filename):
 def run_simulation(grid_size=10, n_of_robots=3):
     """Start the robot navigation simulation.
 
-    This function sets up a grid containing drinks, creates robots with random positions and favourite drinks,
-    and makes each robot navigate to find its drink on the grid.
+    This function sets up a grid containing drinks, creates robots with random
+    positions and favourite drinks,and makes each robot navigate to find its
+    drink on the grid.
 
     Args:
         grid_size (int): The size of the grid (default is 10).
@@ -71,10 +72,8 @@ def run_simulation(grid_size=10, n_of_robots=3):
         robot.navigate()
         print()
         
-    
     pass
     
-
 grid_size = 10 # Global variable
 n_of_robots = 3
 run_simulation(grid_size, n_of_robots)

@@ -1,6 +1,7 @@
 
 class Robot:
-    def __init__(self, identifier, name, position, direction, favourite_drink, grid, directions=['North','East','South','West']):
+    def __init__(self, identifier, name, position, direction, favourite_drink,
+                 grid, directions=None):
         """Constructor for Robot.
 
         Args:
@@ -10,7 +11,8 @@ class Robot:
             direction (str): Starting direction of the robot.
             favourite_drink (str): The robot's favourite drink.
             grid (Grid): The grid where the robot navigates.
-            directions (list): List of possible directions the robot can face (default is ['North', 'East', 'South', 'West']).
+            directions (list): List of possible directions the robot can face
+                               (default is ['North', 'East', 'South', 'West']).
         """
         self.id = identifier
         self.name = name
@@ -18,21 +20,17 @@ class Robot:
         self.direction = direction
         self.favourite_drink = favourite_drink
         self.grid = grid
-        self.directions = directions
+        self.directions = ['North','East','South','West']
 
     def greet(self):
-        print(f"Hello. My name is {self.name}. My ID is {self.id}. My favourite drink is {self.favourite_drink}.")
+        print(f"Hello. My name is {self.name}. My ID is {self.id}."
+              f"My favourite drink is {self.favourite_drink}.")
         pass
 
     def step(self):
-        """Moves the robot one step in its current direction.
-
-        The robot's position will be updated based on the direction it is facing.
-
-        """
+        """Moves the robot one step in its current direction."""
         row = self.position[0]
         col = self.position[1]
-        direction = self.direction
         
         if self.direction == 'North':
             row -= 1 
@@ -131,8 +129,10 @@ class Robot:
 
 
 class LeapingRobot(Robot):
-    def __init__(self, identifier, name, position, direction, favourite_drink, grid, directions=['North','East','South','West']):
-        super().__init__(identifier, name, position, direction, favourite_drink, grid, directions=['North','East','South','West'])
+    def __init__(self, identifier, name, position, direction, favourite_drink,
+                 grid, directions=None):
+        super().__init__(identifier, name, position, direction, favourite_drink,
+                         grid, directions)
 
     def leap(self):
         row = self.position[0]

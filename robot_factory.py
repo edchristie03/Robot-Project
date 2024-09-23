@@ -1,26 +1,27 @@
 import random
-from robot import Robot
-from robot import LeapingRobot
 
 
+from robot import Robot, LeapingRobot
 
 
 # Set up robot
 
 class RobotFactory:
     
-    def __init__(self, grid, all_names, chosen_names=[], prev_id=1000):
+    def __init__(self, grid, all_names, chosen_names=None, prev_id=1000):
         """Constructor for RobotFactory.
 
         Args:
             grid (Grid): The grid where robots will navigate.
             all_names (list): A list of all possible robot names.
-            chosen_names (list): A list of robot names already chosen (default is empty).
-            prev_id (int): The previous robot ID, used to increment and assign unique IDs (default is 1000).
+            chosen_names (list): A list of robot names already chosen
+                (default is empty).
+            prev_id (int): The previous robot ID, used to increment and
+                assign unique IDs (default is 1000).
         """
         self.grid = grid
         self.all_names = all_names
-        self.chosen_names = chosen_names
+        self.chosen_names = []
         self.prev_id = prev_id
 
     def create_robots(self, n_of_robots):
@@ -46,7 +47,8 @@ class RobotFactory:
     # need to get name based on the drink using the dictionary
 
     def set_up_robot(self, drink):
-        """Sets up the robot's initial attributes including name, ID, position, direction, and favourite drink.
+        """Sets up the robot's initial attributes including name, ID, position,
+        direction, and favourite drink.
 
         Returns:
             robot (Robot): A Robot object with the initialized attributes.
@@ -93,7 +95,8 @@ class RobotFactory:
             return random.randint(1, 1000000)
 
     def get_name_from_drink(self, drink):
-        names = {'Cider': 'Ed', 'Maracuya': 'Yosh', 'Coffee': 'Sophie', 'Milk': 'Hester', 'Cerveza': 'Ramon'}
+        names = {'Cider': 'Ed', 'Maracuya': 'Yosh', 'Coffee': 'Sophie',
+                 'Milk': 'Hester', 'Cerveza': 'Ramon'}
         return names[drink.name]
         
 
@@ -122,6 +125,7 @@ class RobotFactory:
         Returns:
             drink (str): The favourite drink of the robot.
         """
-        drinks = {'Ed': 'Cider', 'Yosh': 'Maracuya', 'Sophie': 'Coffee', 'Hester': 'Milk', 'Ramon': 'Cerveza'}
+        drinks = {'Ed': 'Cider', 'Yosh': 'Maracuya', 'Sophie': 'Coffee',
+                  'Hester': 'Milk', 'Ramon': 'Cerveza'}
         return drinks[name]
         
