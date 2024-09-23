@@ -1,5 +1,8 @@
 import random
 from robot import Robot
+from robot import LeapingRobot
+
+
 
 
 # Set up robot
@@ -54,7 +57,10 @@ class RobotFactory:
         direction = self.get_random_direction()
         drink = drink.name
 
-        robot = Robot(identifier, name, position, direction, drink, self.grid)
+        if random.randint(0, 1) == 0:
+            robot = LeapingRobot(identifier, name, position, direction, drink, self.grid)
+        else:
+            robot = Robot(identifier, name, position, direction, drink, self.grid)
         
         return robot
 

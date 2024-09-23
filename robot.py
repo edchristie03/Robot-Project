@@ -130,6 +130,11 @@ class Robot:
         return f"Robot called {self.name} with ID: {self.id}."
 
 
+class LeapingRobot(Robot):
+    def __init__(self, identifier, name, position, direction, favourite_drink, grid, directions=['North','East','South','West']):
+        super().__init__(identifier, name, position, direction, favourite_drink, grid, directions=['North','East','South','West'])
+
+
 
 
 
