@@ -134,11 +134,36 @@ class LeapingRobot(Robot):
     def __init__(self, identifier, name, position, direction, favourite_drink, grid, directions=['North','East','South','West']):
         super().__init__(identifier, name, position, direction, favourite_drink, grid, directions=['North','East','South','West'])
 
+    def leap(self):
+        row = self.position[0]
+        col = self.position[1]
+        direction = self.direction
+        
+        if self.direction == 'North':
+            row = 0
+        elif self.direction == 'South':         
+            row = self.grid.size - 1 
+        elif self.direction == 'East':        
+            col = self.grid.size - 1
+        elif self.direction == 'West':
+            col = 0
+            
+        self.position = (row, col)
 
+        return
 
+    def move_to_edge(self):
+        """Moves the robot in its current direction until it reaches the edge of the grid.
 
+        The robot will continuously move forward until it encounters a wall (edge of the grid).
 
-
+        """
+        while not self.is_bot_facing_wall():
+            print('Leaping to edge!')
+            self.leap()
+            self.print_location_direction()
+        
+        return
 
 
         
