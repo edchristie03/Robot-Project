@@ -5,6 +5,7 @@ from robot_factory import RobotFactory
 from drink_factory import DrinkFactory
 from grid import Grid
 
+print(hello)
 
 def get_name_candidates(filename):
     """Load a list of robot names from a file.
