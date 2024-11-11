@@ -46,7 +46,7 @@ class Grid:
         return 
 
     def get_unique_drink_name(self):
-        all_possible_drinks = ['Cider', 'Maracuya', 'Coffee', 'Milk', 'Cerveza']
+        all_possible_drinks = ['Apple Juice', 'Orange Juice', 'Coffee', 'Milk', 'Beer']
         taken_drinks = [drink.name for drink in self.drinks]
         available_drinks = [drink for drink in all_possible_drinks if drink not in taken_drinks]
         if available_drinks:

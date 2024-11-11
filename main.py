@@ -75,19 +75,7 @@ n_of_robots = 3
 run_simulation(grid_size, n_of_robots)
 
 
-# change name of functions to make code more readable
 
-# update docustrings 
-
-# the code creates the grid and the drinks first
-# therefore the reading of names as all_names is irrelevant as I have
-# hardcoded possible drinks and the robots with that as favourite drink in the
-# robotfactory class
-
-# maybe a better algorithm would be to initialise the grid and robots first
-# add the robot favourite drinks to the text file
-# then place drinks from randomly selected robots accordingly
-# could add competition for drinks
 
 
 
