@@ -95,8 +95,8 @@ class RobotFactory:
             return random.randint(1, 1000000)
 
     def get_name_from_drink(self, drink):
-        names = {'Cider': 'Ed', 'Maracuya': 'Yosh', 'Coffee': 'Sophie',
-                 'Milk': 'Hester', 'Cerveza': 'Ramon'}
+        names = {'Apple Juice': 'Ed', 'Orange Juice': 'Josh', 'Coffee': 'Sophie',
+                 'Milk': 'Hester', 'Beer': 'Ramon'}
         return names[drink.name]
         
 
